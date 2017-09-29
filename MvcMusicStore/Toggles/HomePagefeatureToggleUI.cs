@@ -7,7 +7,7 @@ using System.Linq;
 using System.Web;
 using MvcMusicStore.Models;
 
-namespace MvcMusicStore.FeaturetoggleSwitches
+namespace MvcMusicStore.Toggles
 {
     public class HomePagefeatureToggleUI : MVCMusicStoreSqlFeatureToggle
     {

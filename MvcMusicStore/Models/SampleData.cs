@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Data.Entity;
 
-using MvcMusicStore.FeaturetoggleSwitches;
+using MvcMusicStore.Toggles;
 
 namespace MvcMusicStore.Models
 {
@@ -18,7 +18,6 @@ namespace MvcMusicStore.Models
                 new FeatureToggle { Id = new HomePagefeatureToggle().Id, Enabled = false, Name=typeof(HomePagefeatureToggle).Name},
                 new FeatureToggle { Id = new HomePagefeatureToggleUI().Id, Enabled = false, Name=typeof(HomePagefeatureToggleUI).Name },
                 new FeatureToggle { Id = new ServiceAFeaturetoggle().Id, Enabled = false, Name =  typeof(ServiceAFeaturetoggle).Name},
-                new FeatureToggle { Id = new ServiceBFeaturetoggle().Id, Enabled = false, Name =  typeof(ServiceBFeaturetoggle).Name}
             }.ForEach(t => context.FeatureToggles.Add(t));
 
             var genres = new List<Genre>

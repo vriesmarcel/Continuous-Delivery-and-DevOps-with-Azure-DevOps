@@ -2,7 +2,7 @@
 using System;
 using System.Data.Entity;
 
-namespace MvcMusicStore.FeaturetoggleSwitches
+namespace MvcMusicStore.Toggles
 {
     public class MVCMusicStoreSqlFeatureToggle : FeatureToggle.Toggles.SqlFeatureToggle
     {

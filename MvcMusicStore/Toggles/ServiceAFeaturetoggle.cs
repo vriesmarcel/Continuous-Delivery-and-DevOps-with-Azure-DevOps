@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace MvcMusicStore.FeaturetoggleSwitches
+namespace MvcMusicStore.Toggles
 {
 
     public class ServiceAFeaturetoggle : MVCMusicStoreSqlFeatureToggle

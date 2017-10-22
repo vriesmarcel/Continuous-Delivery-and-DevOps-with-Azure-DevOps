@@ -70,7 +70,7 @@ namespace MvcMusicStore.Controllers
         {
             // do a bussy wait to simulate some heavy serverside stuff
             // to come up with a number.
-            for (int x = 0; x < 100000000; x++) ;
+            for (int x = 0; x < 1000000000; x++) ;
 
         }
 
@@ -85,8 +85,8 @@ namespace MvcMusicStore.Controllers
                 taskresult.Wait();
 
                 var location = JsonConvert.DeserializeObject<Location>(taskresult.Result);
-
-                result = location.loc;
+                if(location.city!=null)
+                    result = location.city.ToString();
             }
             catch (Exception e)
             {

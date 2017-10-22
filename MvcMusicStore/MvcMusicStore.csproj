@@ -220,7 +220,7 @@
   <ItemGroup>
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\CheckoutController.cs" />
-    <Compile Include="Controllers\FeatureToglesController.cs" />
+    <Compile Include="Controllers\FeatureTogglesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ShoppingCartController.cs" />
     <Compile Include="Controllers\StoreController.cs" />
@@ -354,10 +354,9 @@
     <Content Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
-    <Content Include="Web.Staging.config" >
+    <Content Include="Web.Staging.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
-    
     <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
@@ -380,7 +379,6 @@
     <Content Include="Views\FeatureToggles\Details.cshtml" />
     <Content Include="Views\FeatureToggles\Edit.cshtml" />
     <Content Include="Views\FeatureToggles\Index.cshtml" />
-
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Store\Details.cshtml" />

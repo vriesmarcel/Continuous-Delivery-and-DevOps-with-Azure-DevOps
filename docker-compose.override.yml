@@ -4,6 +4,11 @@ services:
   mvcmusicstore:
     ports:
       - "80"
+    environment:
+      MusicStoreEntities: 'Data Source=db;Initial Catalog=MvcMusicStore;Integrated Security=False;User ID=sa;Password=P@ssw0rd01!;Connect Timeout=60;Encrypt=False;TrustServerCertificate=True;ApplicationIntent=ReadWrite;MultiSubnetFailover=False'
+ #   security-opt:
+#      credentialspec: 'file://WebApplication1.json'
+
 networks:
   default:
     external:

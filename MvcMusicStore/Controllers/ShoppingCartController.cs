@@ -71,8 +71,8 @@ namespace MvcMusicStore.Controllers
             int itemCount = cart.RemoveFromCart(id);
             // log telemetry data to understand when people remove items from the basket
             LogTelemetryEvent(cart, album);
-            if (cart.GetTotal() > 30)
-                throw new InvalidOperationException("Value is > 30, not allowed to remove items....:-)");
+            //if (cart.GetTotal() > 30)
+            //    throw new InvalidOperationException("Value is > 30, not allowed to remove items....:-)");
 
             // Display the confirmation message
             var results = new ShoppingCartRemoveViewModel

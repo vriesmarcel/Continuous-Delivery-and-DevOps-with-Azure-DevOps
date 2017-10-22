@@ -7,7 +7,7 @@ using System.Net.Http;
 using Newtonsoft.Json;
 using System;
 using Microsoft.ApplicationInsights;
-using MvcMusicStore.Toggles;
+using MvcMusicStore.FeaturetoggleSwitches;
 
 
 namespace MvcMusicStore.Controllers
@@ -47,7 +47,7 @@ namespace MvcMusicStore.Controllers
         private string GetCountryFromClient(string ip)
         {
             string result = null;
-            if(new Toggles.ServiceAFeaturetoggle().FeatureEnabled)
+            if(new FeaturetoggleSwitches.ServiceAFeaturetoggle().FeatureEnabled)
             {
                 result = GetCountryViaRemoteService(ip);
             }
@@ -70,7 +70,7 @@ namespace MvcMusicStore.Controllers
         {
             // do a bussy wait to simulate some heavy serverside stuff
             // to come up with a number.
-            for (int x = 0; x < 100000; x++) ;
+            for (int x = 0; x < 100000000; x++) ;
 
         }
 

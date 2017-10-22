@@ -6,3 +6,19 @@ services:
     build:
       context: .\MvcMusicStore
       dockerfile: Dockerfile
+    depends_on:
+      - db
+  
+  db:
+    image: microsoft/mssql-server-windows
+    expose:
+     - "1433"
+    environment:
+      ACCEPT_EULA: 'Y'
+      sa_password: 'P@ssw0rd01!'
+
+
+networks:
+  default:
+    external:
+      name: "nat"

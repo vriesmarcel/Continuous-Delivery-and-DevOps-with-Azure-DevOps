@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Data.Entity;
 
-using MvcMusicStore.Toggles;
+using MvcMusicStore.FeaturetoggleSwitches;
 
 namespace MvcMusicStore.Models
 {

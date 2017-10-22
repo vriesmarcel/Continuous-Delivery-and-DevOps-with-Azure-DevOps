@@ -220,15 +220,15 @@
   <ItemGroup>
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\CheckoutController.cs" />
-    <Compile Include="Controllers\FeatureTogglesController.cs" />
+    <Compile Include="Controllers\FeatureToglesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ShoppingCartController.cs" />
     <Compile Include="Controllers\StoreController.cs" />
     <Compile Include="Controllers\StoreManagerController.cs" />
-    <Compile Include="Toggles\HomePagefeatureToggle.cs" />
-    <Compile Include="Toggles\HomePagefeatureToggleUI.cs" />
-    <Compile Include="Toggles\MVCMusicStoreSqlFeatureToggle.cs" />
-    <Compile Include="Toggles\ServiceAFeaturetoggle.cs" />
+    <Compile Include="FeaturetoggleSwitches\HomePagefeatureToggle.cs" />
+    <Compile Include="FeaturetoggleSwitches\HomePagefeatureToggleUI.cs" />
+    <Compile Include="FeaturetoggleSwitches\MVCMusicStoreSqlFeatureToggle.cs" />
+    <Compile Include="FeaturetoggleSwitches\ServiceAFeaturetoggle.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -320,6 +320,7 @@
     </None>
     <None Include="Properties\PublishProfiles\Devintersection.pubxml" />
     <None Include="Properties\PublishProfiles\DevintersectionDemo.pubxml" />
+    <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Properties\PublishProfiles\k8Cluster.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="parameters.xml" />
@@ -353,6 +354,10 @@
     <Content Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
+    <Content Include="Web.Staging.config" >
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    
     <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
@@ -375,6 +380,7 @@
     <Content Include="Views\FeatureToggles\Details.cshtml" />
     <Content Include="Views\FeatureToggles\Edit.cshtml" />
     <Content Include="Views\FeatureToggles\Index.cshtml" />
+
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Store\Details.cshtml" />

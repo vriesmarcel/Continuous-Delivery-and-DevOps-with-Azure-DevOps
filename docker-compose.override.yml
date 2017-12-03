@@ -6,6 +6,16 @@ services:
       - "80"
     environment:
       MusicStoreEntities: 'Data Source=db;Initial Catalog=MvcMusicStore;Integrated Security=False;User ID=sa;Password=P@ssw0rd0123!;Connect Timeout=60;Encrypt=False;TrustServerCertificate=True;ApplicationIntent=ReadWrite;MultiSubnetFailover=False'
+    depends_on:
+      - db
+  
+  db:
+    image: microsoft/mssql-server-windows
+    expose:
+     - "1433"
+    environment:
+      ACCEPT_EULA: 'Y'
+      sa_password: 'P@ssw0rd0123!'
 
 
 networks:

@@ -38,7 +38,7 @@ namespace MvcMusicStore.Controllers
         {
             // Group the order details by album and return
             // the albums with the highest count
-
+            // Adding some comment to trigger a build
             return storeDB.Albums
                 .OrderByDescending(a => a.OrderDetails.Count())
                 .Take(count)

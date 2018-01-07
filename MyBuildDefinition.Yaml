@@ -31,12 +31,6 @@ steps:
     platform: "$(BuildPlatform)"
     configuration: "$(BuildConfiguration)"
 
-- task: VSTest@2
-  inputs:
-    testAssemblyVer2: "**\$(BuildConfiguration)\*test*.dll!**\obj\**"
-    platform: "$(BuildPlatform)"
-    configuration: "$(BuildConfiguration)"
-
 - task: PublishSymbols@1
   inputs:
     SearchPattern: "**\bin\**\*.pdb"

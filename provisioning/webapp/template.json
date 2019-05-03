@@ -1,51 +1,11 @@
 {
-    "resources": [
-        {
-            "name": "[parameters('name')]",
-            "type": "Microsoft.Web/sites",
-            "properties": {
-                "siteConfig": {
-                    "appSettings": [
-                        {
-                            "name": "APPINSIGHTS_INSTRUMENTATIONKEY",
-                            "value": "[reference('microsoft.insights/components/mvcmusicstoredemo', '2015-05-01').InstrumentationKey]"
-                        },
-                        {
-                            "name": "XDT_MicrosoftApplicationInsights_Mode",
-                            "value": "default"
-                        },
-                        {
-                            "name": "ApplicationInsightsAgent_EXTENSION_VERSION",
-                            "value": "~2"
-                        }
-                    ]
-                },
-                "name": "[parameters('name')]",
-                "serverFarmId": "[concat('/subscriptions/', parameters('subscriptionId'),'/resourcegroups/', parameters('serverFarmResourceGroup'), '/providers/Microsoft.Web/serverfarms/', parameters('hostingPlanName'))]",
-                "hostingEnvironment": "[parameters('hostingEnvironment')]"
-            },
-            "dependsOn": [
-                "microsoft.insights/components/mvcmusicstoredemo"
-            ],
-            "apiVersion": "2016-03-01",
-            "location": "[parameters('location')]"
-        },
-        {
-            "apiVersion": "2015-05-01",
-            "name": "mvcmusicstoredemo",
-            "type": "microsoft.insights/components",
-            "location": "West US 2",
-            "properties": {
-                "ApplicationId": "[parameters('name')]",
-                "Request_Source": "IbizaWebAppExtensionCreate"
-            }
-        }
-    ],
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
     "parameters": {
-        "name": {
+        "subscriptionId": {
             "type": "string"
         },
-        "hostingPlanName": {
+        "name": {
             "type": "string"
         },
         "location": {
@@ -54,13 +14,96 @@
         "hostingEnvironment": {
             "type": "string"
         },
+        "hostingPlanName": {
+            "type": "string"
+        },
         "serverFarmResourceGroup": {
             "type": "string"
         },
-        "subscriptionId": {
+        "alwaysOn": {
+            "type": "bool"
+        },
+        "currentStack": {
+            "type": "string"
+        },
+        "netFrameworkVersion": {
             "type": "string"
         }
     },
-    "$schema": "http://schema.management.azure.com/schemas/2014-04-01-preview/deploymentTemplate.json#",
-    "contentVersion": "1.0.0.0"
+    "resources": [
+        {
+            "apiVersion": "2018-02-01",
+            "name": "[parameters('name')]",
+            "type": "Microsoft.Web/sites",
+            "location": "[parameters('location')]",
+            "tags": null,
+            "dependsOn": [
+                "microsoft.insights/components/AI-pluralsight-bfec"
+            ],
+            "properties": {
+                "name": "[parameters('name')]",
+                "siteConfig": {
+                    "appSettings": [
+                        {
+                            "name": "APPINSIGHTS_INSTRUMENTATIONKEY",
+                            "value": "[reference('microsoft.insights/components/AI-pluralsight-bfec', '2015-05-01').InstrumentationKey]"
+                        },
+                        {
+                            "name": "ApplicationInsightsAgent_EXTENSION_VERSION",
+                            "value": "~2"
+                        },
+                        {
+                            "name": "XDT_MicrosoftApplicationInsights_Mode",
+                            "value": "default"
+                        },
+                        {
+                            "name": "DiagnosticServices_EXTENSION_VERSION",
+                            "value": "disabled"
+                        },
+                        {
+                            "name": "APPINSIGHTS_PROFILERFEATURE_VERSION",
+                            "value": "disabled"
+                        },
+                        {
+                            "name": "APPINSIGHTS_SNAPSHOTFEATURE_VERSION",
+                            "value": "disabled"
+                        },
+                        {
+                            "name": "InstrumentationEngine_EXTENSION_VERSION",
+                            "value": "disabled"
+                        },
+                        {
+                            "name": "SnapshotDebugger_EXTENSION_VERSION",
+                            "value": "disabled"
+                        },
+                        {
+                            "name": "XDT_MicrosoftApplicationInsights_BaseExtensions",
+                            "value": "disabled"
+                        }
+                    ],
+                    "metadata": [
+                        {
+                            "name": "CURRENT_STACK",
+                            "value": "[parameters('currentStack')]"
+                        }
+                    ],
+                    "netFrameworkVersion": "[parameters('netFrameworkVersion')]",
+                    "alwaysOn": "[parameters('alwaysOn')]"
+                },
+                "serverFarmId": "[concat('/subscriptions/', parameters('subscriptionId'),'/resourcegroups/', parameters('serverFarmResourceGroup'), '/providers/Microsoft.Web/serverfarms/', parameters('hostingPlanName'))]",
+                "hostingEnvironment": "[parameters('hostingEnvironment')]",
+                "clientAffinityEnabled": true
+            }
+        },
+        {
+            "apiVersion": "2015-05-01",
+            "name": "AI-pluralsight-bfec",
+            "type": "microsoft.insights/components",
+            "location": "westeurope",
+            "properties": {
+                "ApplicationId": "[parameters('name')]",
+                "Request_Source": "IbizaWebAppExtensionCreate"
+            }
+        }
+    ]
 }

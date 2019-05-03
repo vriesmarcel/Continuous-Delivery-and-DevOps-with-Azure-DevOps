@@ -1,7 +1,7 @@
-FROM microsoft/mssql-server-windows-developer
+FROM microsoft/mssql-server-windows
 
 # SQL environmental variables
-ENV sa_password "P@ssw0rd0123!"
+ENV sa_password "P@ssw0rd01!"
 ENV attach_dbs "[]"
 
 # Copy SQL scripts for setting up blog database and tables

@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
-using System.Web.Routing;
 using System.Web.Security;
 using Mvc3ToolsUpdateWeb_Default.Models;
 using MvcMusicStore.Models;
@@ -13,7 +9,7 @@ namespace Mvc3ToolsUpdateWeb_Default.Controllers
 {
     public class AccountController : Controller
     {
-        //add some code to trigger a CI build
+
         private void MigrateShoppingCart(string UserName)
         {
             // Associate shopping cart items with logged-in user

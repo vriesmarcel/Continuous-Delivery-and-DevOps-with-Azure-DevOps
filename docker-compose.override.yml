@@ -1,22 +1,21 @@
-version: '3'
+version: '3.4'
 
 services:
   mvcmusicstore:
     ports:
       - "80"
     environment:
-      MusicStoreEntities: 'Data Source=db;Initial Catalog=MvcMusicStore;Integrated Security=False;User ID=sa;Password=P@ssw0rd0123!;Connect Timeout=60;Encrypt=False;TrustServerCertificate=True;ApplicationIntent=ReadWrite;MultiSubnetFailover=False'
+      MusicStoreEntities: 'Data Source=db;Initial Catalog=MvcMusicStore;Integrated Security=False;User ID=sa;Password=P@ssw0rd01!;Connect Timeout=60;Encrypt=False;TrustServerCertificate=True;ApplicationIntent=ReadWrite;MultiSubnetFailover=False'
     depends_on:
       - db
   
   db:
-    image: microsoft/mssql-server-windows
+    image: microsoft/mssql-server-windows-developer
     expose:
      - "1433"
     environment:
       ACCEPT_EULA: 'Y'
-      sa_password: 'P@ssw0rd0123!'
-
+      sa_password: 'P@ssw0rd01!'
 
 networks:
   default:

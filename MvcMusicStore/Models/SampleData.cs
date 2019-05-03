@@ -4,23 +4,29 @@ using System.Linq;
 using System.Web;
 using System.Data.Entity;
 
-using MvcMusicStore.FeaturetoggleSwitches;
 
 namespace MvcMusicStore.Models
 {
-    public class SampleData : DropCreateDatabaseIfModelChanges<MusicStoreEntities>
+    public class DatabaseInitializer : NullDatabaseInitializer<MusicStoreEntities>
     {
-        protected override void Seed(MusicStoreEntities context)
+        public override void InitializeDatabase(MusicStoreEntities context)
         {
+            // query the database on the schema status.
+            var productTableID = context.Database.SqlQuery<int?>("Select Object_ID('Products')").Single();
 
-            new List<FeatureToggle>
+            // set a flag on the class indicating we can use the new tables
+            MusicStoreEntities.IsDBSchemaAlreadyAvailable = productTableID.HasValue;
+
+        }
+
+    }
+
+        public class SampleData : DropCreateDatabaseIfModelChanges<MusicStoreEntities>
+        {
+            protected override void Seed(MusicStoreEntities context)
             {
-                new FeatureToggle { Id = new HomePagefeatureToggle().Id, Enabled = false, Name=typeof(HomePagefeatureToggle).Name},
-                new FeatureToggle { Id = new HomePagefeatureToggleUI().Id, Enabled = false, Name=typeof(HomePagefeatureToggleUI).Name },
-                new FeatureToggle { Id = new ServiceAFeaturetoggle().Id, Enabled = false, Name =  typeof(ServiceAFeaturetoggle).Name},
-            }.ForEach(t => context.FeatureToggles.Add(t));
 
-            var genres = new List<Genre>
+                var genres = new List<Genre>
             {
                 new Genre { Name = "Rock" },
                 new Genre { Name = "Jazz" },
@@ -34,7 +40,7 @@ namespace MvcMusicStore.Models
                 new Genre { Name = "Classical" }
             };
 
-            var artists = new List<Artist>
+                var artists = new List<Artist>
             {
                 new Artist { Name = "Aaron Copland & London Symphony Orchestra" },
                 new Artist { Name = "Aaron Goldberg" },
@@ -187,7 +193,7 @@ namespace MvcMusicStore.Models
                 new Artist { Name = "Zeca Pagodinho" }
             };
 
-            new List<Album>
+                new List<Album>
             {
                 new Album { Title = "The Best Of Men At Work", Genre = genres.Single(g => g.Name == "Rock"), Price = 8.99M, Artist = artists.Single(a => a.Name == "Men At Work"), AlbumArtUrl = "/content/Images/placeholder.gif" },
                 new Album { Title = "A Copland Celebration, Vol. I", Genre = genres.Single(g => g.Name == "Classical"), Price = 8.99M, Artist = artists.Single(a => a.Name == "Aaron Copland & London Symphony Orchestra"), AlbumArtUrl = "/content/Images/placeholder.gif" },
@@ -436,6 +442,6 @@ namespace MvcMusicStore.Models
                 new Album { Title = "Bach: The Cello Suites", Genre = genres.Single(g => g.Name == "Classical"), Price = 8.99M, Artist = artists.Single(a => a.Name == "Yo-Yo Ma"), AlbumArtUrl = "/content/Images/placeholder.gif" },
                 new Album { Title = "Ao Vivo [IMPORT]", Genre = genres.Single(g => g.Name == "Latin"), Price = 8.99M, Artist = artists.Single(a => a.Name == "Zeca Pagodinho"), AlbumArtUrl = "/content/Images/placeholder.gif" },
             }.ForEach(a => context.Albums.Add(a));
+            }
         }
     }
-}

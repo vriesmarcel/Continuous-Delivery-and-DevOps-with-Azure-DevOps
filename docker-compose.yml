@@ -2,13 +2,7 @@ version: '3.4'
 
 services:
   mvcmusicstore:
-    image: mvcmusicstore
+    image: ${DOCKER_REGISTRY-}mvcmusicstore
     build:
       context: .\MvcMusicStore
       dockerfile: Dockerfile
-    
-
-networks:
-  default:
-    external:
-      name: "nat"

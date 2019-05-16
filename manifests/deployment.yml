@@ -1,0 +1,16 @@
+apiVersion : apps/v1beta1
+kind: Deployment
+metadata:
+  name: releasepipelines 
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: releasepipelines 
+    spec:
+      containers:
+        - name: releasepipelines 
+          image: demo12.azurecr.io/releasepipelines 
+          ports:
+          - containerPort: 80

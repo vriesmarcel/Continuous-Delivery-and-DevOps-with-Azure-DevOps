@@ -57,8 +57,8 @@ stages:
       - task: DockerCompose@0
         displayName: 'Build services'
         inputs:
-          azureSubscription: '$(Parameters.azureSubscriptionEndpoint)'
-          azureContainerRegistry: '$(Parameters.azureContainerRegistry)'
+          azureSubscription: 'pluralsight demo'
+          azureContainerRegistry: '{"loginServer":"demo12.azurecr.io", "id" : "/subscriptions/e57087a4-a053-48c9-8857-995316398cdc/resourceGroups/demo/providers/Microsoft.ContainerRegistry/registries/demo12"}'
           dockerComposeFile: '$(Parameters.dockerComposeFile)'
           additionalDockerComposeFiles: 'docker-compose.ci.yml'
           dockerComposeFileArgs: 'DOCKER_BUILD_SOURCE='
@@ -68,8 +68,8 @@ stages:
       - task: DockerCompose@0
         displayName: 'Push services'
         inputs:
-          azureSubscription: '$(Parameters.azureSubscriptionEndpoint)'
-          azureContainerRegistry: '$(Parameters.azureContainerRegistry)'
+          azureSubscription: 'pluralsight demo'
+          azureContainerRegistry: '{"loginServer":"demo12.azurecr.io", "id" : "/subscriptions/e57087a4-a053-48c9-8857-995316398cdc/resourceGroups/demo/providers/Microsoft.ContainerRegistry/registries/demo12"}'
           dockerComposeFile: '$(Parameters.dockerComposeFile)'
           additionalDockerComposeFiles: 'docker-compose.ci.yml'
           dockerComposeFileArgs: 'DOCKER_BUILD_SOURCE='
@@ -79,8 +79,8 @@ stages:
       - task: DockerCompose@0
         displayName: 'Lock services'
         inputs:
-          azureSubscription: '$(Parameters.azureSubscriptionEndpoint)'
-          azureContainerRegistry: '$(Parameters.azureContainerRegistry)'
+          azureSubscription: 'pluralsight demo'
+          azureContainerRegistry: '{"loginServer":"demo12.azurecr.io", "id" : "/subscriptions/e57087a4-a053-48c9-8857-995316398cdc/resourceGroups/demo/providers/Microsoft.ContainerRegistry/registries/demo12"}'
           dockerComposeFile: '$(Parameters.dockerComposeFile)'
           additionalDockerComposeFiles: 'docker-compose.ci.yml'
           dockerComposeFileArgs: 'DOCKER_BUILD_SOURCE='

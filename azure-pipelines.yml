@@ -15,6 +15,9 @@ variables:
   imageRepository: 'releasepipelines'
   containerRegistry: 'demo12.azurecr.io'
   dockerfilePath: '**/Dockerfile'
+  Parameters.solution: 'MvcMusicStore.sln'
+  BuildPlatform: 'Any CPU'
+  BuildConfiguration: 'Release'
   tag: '$(Build.BuildId)'
   
 

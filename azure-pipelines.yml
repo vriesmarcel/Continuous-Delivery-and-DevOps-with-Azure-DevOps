@@ -79,23 +79,14 @@ stages:
           dockerComposeFileArgs: 'DOCKER_BUILD_SOURCE='
           action: 'Push services'
           additionalImageTags: '$(Build.BuildId)'
-
-      - task: DockerCompose@0
-        displayName: 'Lock services'
-        inputs:
-          azureSubscription: 'pluralsight demo'
-          azureContainerRegistry: '{"loginServer":"demo12.azurecr.io", "id" : "/subscriptions/e57087a4-a053-48c9-8857-995316398cdc/resourceGroups/demo/providers/Microsoft.ContainerRegistry/registries/demo12"}'
-          dockerComposeFile: '$(Parameters.dockerComposeFile)'
-          additionalDockerComposeFiles: 'docker-compose.ci.yml'
-          dockerComposeFileArgs: 'DOCKER_BUILD_SOURCE='
-          action: 'Lock services'
-          outputDockerComposeFile: '$(Build.ArtifactStagingDirectory)/docker-compose.yml'
-
+     
       - task: CopyFiles@2
         inputs:
-          Contents: '**/docker-compose.env.yml
+          SourceFolder: '$(Build.SourcesDirectory)'
+          Contents: |
+            **/docker-compose.env.yml
             **/docker-compose.env.*.yml
-            **/musiscstore-deploy.yml'
+            **/musiscstore-deploy.yml
           TargetFolder: '$(Build.ArtifactStagingDirectory)'
       
       - task: PublishBuildArtifacts@1

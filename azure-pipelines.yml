@@ -11,15 +11,20 @@ resources:
 variables:
 
   # Container registry service connection established during pipeline creation
-  dockerRegistryServiceConnection: '80621de0-e352-4606-91aa-4c2bf9dfac11'
-  imageRepository: 'mvcmusicstore'
+  dockerRegistryServiceConnection: 'fd44639a-cc79-432b-818a-49333873537f'
+  imageRepository: 'releasepipelines'
   containerRegistry: 'psreleasedemo.azurecr.io'
   dockerfilePath: '**/Dockerfile'
+  Parameters.solution: 'MvcMusicStore.sln'
+  Parameters.dockerComposeFile: '**/docker-compose.yml'
+  BuildPlatform: 'Any CPU'
+  BuildConfiguration: 'Release'
   tag: '$(Build.BuildId)'
   
+
   # Kubernetes Namespace
   k8sNamespace: 'default'
-  imagePullSecret: 'psreleasedemoeebf-auth'
+  imagePullSecret: 'demo12b02d-auth'
 
   # Agent VM image name
   vmImageName: 'ubuntu-latest'
@@ -31,22 +36,64 @@ stages:
   - job: Build
     displayName: Build job
     pool:
-      vmImage: $(vmImageName)
+      name: Hosted Windows 2019 with VS2019
+      demands:
+      - msbuild
+      - visualstudio
     steps:
-    - task: Docker@2
-      displayName: Build and push an image to container registry
-      inputs:
-        command: buildAndPush
-        repository: $(imageRepository)
-        dockerfile: $(dockerfilePath)
-        containerRegistry: $(dockerRegistryServiceConnection)
-        tags: |
-          $(tag)
-          
-    - task: PublishPipelineArtifact@0
-      inputs:
-        artifactName: 'manifests'
-        targetPath: 'manifests'
+      - task: NuGetToolInstaller@0
+        displayName: 'Use NuGet 4.4.1'
+        inputs:
+          versionSpec: 4.4.1
+
+      - task: NuGetCommand@2
+        displayName: 'NuGet restore'
+        inputs:
+          restoreSolution: '$(Parameters.solution)'
+
+      - task: VSBuild@1
+        displayName: 'Build solution **\*.sln'
+        inputs:
+          solution: '$(Parameters.solution)'
+          platform: '$(BuildPlatform)'
+          configuration: '$(BuildConfiguration)'
+
+      - task: DockerCompose@0
+        displayName: 'Build services'
+        inputs:
+          azureSubscription: 'pluralsight demo'
+          azureContainerRegistry: '{"loginServer":"psreleasedemo.azurecr.io", "id" : "/subscriptions/e57087a4-a053-48c9-8857-995316398cdc/resourceGroups/demo/providers/Microsoft.ContainerRegistry/registries/psreleasedemo"}'
+          dockerComposeFile: '$(Parameters.dockerComposeFile)'
+          additionalDockerComposeFiles: 'docker-compose.ci.yml'
+          dockerComposeFileArgs: 'DOCKER_BUILD_SOURCE='
+          action: 'Build services'
+          additionalImageTags: '$(Build.BuildId)'
+
+      - task: DockerCompose@0
+        displayName: 'Push services'
+        inputs:
+          azureSubscription: 'pluralsight demo'
+          azureContainerRegistry: '{"loginServer":"psreleasedemo.azurecr.io", "id" : "/subscriptions/e57087a4-a053-48c9-8857-995316398cdc/resourceGroups/demo/providers/Microsoft.ContainerRegistry/registries/psreleasedemo"}'
+          dockerComposeFile: '$(Parameters.dockerComposeFile)'
+          additionalDockerComposeFiles: 'docker-compose.ci.yml'
+          dockerComposeFileArgs: 'DOCKER_BUILD_SOURCE='
+          action: 'Push services'
+          additionalImageTags: '$(Build.BuildId)'
+     
+      - task: CopyFiles@2
+        inputs:
+          SourceFolder: '$(Build.SourcesDirectory)'
+          Contents: |
+            **/docker-compose.env.yml
+            **/docker-compose.env.*.yml
+            **/musiscstore-deploy.yml
+          TargetFolder: '$(Build.ArtifactStagingDirectory)'
+      
+      - task: PublishBuildArtifacts@1
+        inputs:
+          PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+          ArtifactName: 'drop'
+          publishLocation: 'Container'
 
 - stage: Deploy
   displayName: Deploy stage
@@ -55,34 +102,42 @@ stages:
   - deployment: Deploy
     displayName: Deploy job
     pool:
-      vmImage: $(vmImageName)
-    environment: 'ReleasePipelines.default'
+      name: Hosted Windows 2019 with VS2019
+      demands:
+      - msbuild
+      - visualstudio
+    environment: 'Production'
     strategy:
       runOnce:
         deploy:
           steps:
-          - task: DownloadPipelineArtifact@1
+          - task: DownloadBuildArtifacts@0
             inputs:
-              artifactName: 'manifests'
-              downloadPath: '$(System.ArtifactsDirectory)/manifests'
+              buildType: 'current'
+              downloadType: 'single'
+              artifactName: 'drop'
+              downloadPath: '$(System.ArtifactsDirectory)'
 
-          - task: KubernetesManifest@0
-            displayName: Create imagePullSecret
+          - task: replacetokens@3
             inputs:
-              action: createSecret
-              secretName: $(imagePullSecret)
-              namespace: $(k8sNamespace)
-              dockerRegistryEndpoint: $(dockerRegistryServiceConnection)
-              
-          - task: KubernetesManifest@0
-            displayName: Deploy to Kubernetes cluster
+              rootDirectory: '$(System.ArtifactsDirectory)'
+              targetFiles: '**/*.yml'
+              encoding: 'auto'
+              writeBOM: true
+              actionOnMissing: 'warn'
+              keepToken: false
+              tokenPrefix: '__'
+              tokenSuffix: '__'
+
+          - task: Kubernetes@1
             inputs:
-              action: deploy
-              namespace: $(k8sNamespace)
-              manifests: |
-                $(System.ArtifactsDirectory)/manifests/deployment.yml
-                $(System.ArtifactsDirectory)/manifests/service.yml
-              imagePullSecrets: |
-                $(imagePullSecret)
-              containers: |
-                $(containerRegistry)/$(imageRepository):$(tag)
+              connectionType: 'Kubernetes Service Connection'
+              kubernetesServiceEndpoint: 'psdemo'
+              command: 'apply'
+              arguments: '-f $(System.ArtifactsDirectory)\drop\musiscstore-deploy.yml'
+              secretType: 'dockerRegistry'
+              containerRegistryType: 'Azure Container Registry'
+              azureSubscriptionEndpointForSecrets: 'pluralsight demo'
+              azureContainerRegistry: 'psreleasedemo.azurecr.io'
+              secretName: 'regsecret'
+

@@ -134,7 +134,7 @@ stages:
               connectionType: 'Kubernetes Service Connection'
               kubernetesServiceEndpoint: 'psdemo'
               command: 'apply'
-              arguments: '-f $(System.ArtifactsDirectory)\\drop\\musiscstore-deploy.yml'
+              arguments: '-f $(System.ArtifactsDirectory)\drop\musiscstore-deploy.yml'
               secretType: 'dockerRegistry'
               containerRegistryType: 'Azure Container Registry'
               azureSubscriptionEndpointForSecrets: 'pluralsight demo'

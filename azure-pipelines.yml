@@ -13,7 +13,7 @@ variables:
   # Container registry service connection established during pipeline creation
   dockerRegistryServiceConnection: 'fd44639a-cc79-432b-818a-49333873537f'
   imageRepository: 'releasepipelines'
-  containerRegistry: 'demo12.azurecr.io'
+  containerRegistry: 'psreleasedemo.azurecr.io'
   dockerfilePath: '**/Dockerfile'
   Parameters.solution: 'MvcMusicStore.sln'
   Parameters.dockerComposeFile: '**/docker-compose.yml'
@@ -62,7 +62,7 @@ stages:
         displayName: 'Build services'
         inputs:
           azureSubscription: 'pluralsight demo'
-          azureContainerRegistry: '{"loginServer":"demo12.azurecr.io", "id" : "/subscriptions/e57087a4-a053-48c9-8857-995316398cdc/resourceGroups/demo/providers/Microsoft.ContainerRegistry/registries/demo12"}'
+          azureContainerRegistry: '{"loginServer":"psreleasedemo.azurecr.io", "id" : "/subscriptions/e57087a4-a053-48c9-8857-995316398cdc/resourceGroups/demo/providers/Microsoft.ContainerRegistry/registries/psreleasedemo"}'
           dockerComposeFile: '$(Parameters.dockerComposeFile)'
           additionalDockerComposeFiles: 'docker-compose.ci.yml'
           dockerComposeFileArgs: 'DOCKER_BUILD_SOURCE='
@@ -73,7 +73,7 @@ stages:
         displayName: 'Push services'
         inputs:
           azureSubscription: 'pluralsight demo'
-          azureContainerRegistry: '{"loginServer":"demo12.azurecr.io", "id" : "/subscriptions/e57087a4-a053-48c9-8857-995316398cdc/resourceGroups/demo/providers/Microsoft.ContainerRegistry/registries/demo12"}'
+          azureContainerRegistry: '{"loginServer":"psreleasedemo.azurecr.io", "id" : "/subscriptions/e57087a4-a053-48c9-8857-995316398cdc/resourceGroups/demo/providers/Microsoft.ContainerRegistry/registries/psreleasedemo"}'
           dockerComposeFile: '$(Parameters.dockerComposeFile)'
           additionalDockerComposeFiles: 'docker-compose.ci.yml'
           dockerComposeFileArgs: 'DOCKER_BUILD_SOURCE='

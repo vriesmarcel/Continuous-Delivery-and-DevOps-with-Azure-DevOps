@@ -106,7 +106,7 @@ stages:
       demands:
       - msbuild
       - visualstudio
-    environment: 'ReleasePipelines.default'
+    environment: 'Production'
     strategy:
       runOnce:
         deploy:
